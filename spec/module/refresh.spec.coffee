@@ -1,75 +1,43 @@
-TestHelper = require "../test_helper"
-oauthTokenPath = require "../devgyver_oauth_token_path"
+require('chai').should()
 
-fs = require("fs")
-path = require("path")
+steroidsDriver = require('./steroids-driver')
 
 describe "module", ->
 
-  afterEach =>
-    if @testRunDone
-      @session.kill()
-      @failedSession.kill()
+  steroids = steroidsDriver()
 
-  rightHereRightNow =>
-    @testHelper = new TestHelper
-    @testHelper.prepare()
+  describe "refresh", ->
 
-    @testRunDone = false
+    describe "without running init first", ->
 
-  describe "refresh", =>
-    envConfigFilename = path.join(@testHelper.testAppPath, "config", "env.json")
-    moduleConfigFilename = path.join(@testHelper.testAppPath, "config", "appgyver.json")
+      it "fails with human readable error", ->
+        steroids.file("config", "env.json").clean()
 
-    describe "without running init first", =>
-      it 'runs the command which is parsed later in these tests', =>
-        runs =>
-          fs.unlinkSync envConfigFilename if fs.existsSync envConfigFilename
+        steroids.module.refresh().check ({stderr}) ->
+          stderr.should.match /Please run `steroids module init` first/
 
-          @failedSession = @testHelper.runInProject
-            args: ["module", "refresh"]
+    describe "when init has already been run", ->
 
-      it "fails with human readable error", =>
-        done = false
-        waitsFor =>
-          done = @failedSession.stderr.match "Please run `steroids module init` first."
-        runs =>
-          expect(done).toBeTruthy
+      it 'runs the command which is parsed later in these tests', ->
+        steroids.module.init(
+          appId: 1066
+          authToken: "62e937eb1f5870ab5da0cf0dafe2d850"
+          apiKey: "60fad5ac56b50ab80bfecda1e32a8e274f3030157d680a677c9fd435c3adc2f5"
+          userId: 1041
+        ).check ({stderr}) ->
+          stderr.should.be.empty
 
-    describe "when init has already been run", =>
+      it "writes the module configuration in file", ->
+        steroids.file("config", "appgyver.json").exists().should.be.true
 
-      it 'runs the command which is parsed later in these tests', =>
-        runs =>
-          @session = @testHelper.runInProject
-            args: [
-              "module",
-              "init",
-              "--app-id=1066",
-              "--auth-token=62e937eb1f5870ab5da0cf0dafe2d850",
-              "--api-key=60fad5ac56b50ab80bfecda1e32a8e274f3030157d680a677c9fd435c3adc2f5",
-              "--user-id=1041",
-              "--envApiHost=https://env-api.devgyver.com"
-              "--oauthTokenPath=#{oauthTokenPath}"
-            ]
+      it "writes the environment namespace to the module config file", ->
+        steroids.file("config", "appgyver.json")
+          .readJson()
+          .should.have.property('environment').be.defined
 
-      it "writes the module configuration in file", =>
-        expect( fs.existsSync moduleConfigFilename ).toBeTruthy()
+      it 'writes the module config when running module refresh', ->
+        moduleConfig = steroids.file("config", "appgyver.json")
+        moduleConfig.clean()
 
-      it "writes the environment namespace to the module config file", =>
-        config = require moduleConfigFilename
-
-        expect( config.environment ).toBeTruthy()
-
-      it 'writes the module config when running module refresh', =>
-        fs.unlinkSync moduleConfigFilename
-
-        @testHelper.runInProject
-          args: [
-            "module",
-            "refresh"
-            "--envApiHost=https://env-api.devgyver.com"
-            "--oauthTokenPath=#{oauthTokenPath}"
-          ]
-
-        runs =>
-          expect( fs.existsSync(moduleConfigFilename) ).toBeTruthy()
+        steroids.module.refresh().check ->
+          moduleConfig.exists().should.be.true

@@ -73,3 +73,11 @@ module.exports = steroids = ->
           "steroids-make-module-env"
         )
 
+      refresh: ->
+        runSteroidsCommand(
+          "module"
+          "refresh"
+          "--envApiHost=https://env-api.devgyver.com"
+          "--oauthTokenPath=#{oauthTokenPath}"
+        )
+
