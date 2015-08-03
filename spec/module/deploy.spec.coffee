@@ -5,8 +5,6 @@ deepEqual = require 'deep-equal'
 TestHelper = require "../test_helper"
 oauthTokenPath = require "../devgyver_oauth_token_path"
 
-skipWhen process.env.STEROIDS_TEST_RUN_MODE, "fast"
-
 file = (path) ->
   readJson: -> JSON.parse fs.readFileSync path
   exists: -> fs.existsSync path

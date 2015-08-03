@@ -4,8 +4,6 @@ oauthTokenPath = require "../devgyver_oauth_token_path"
 fs = require("fs")
 path = require("path")
 
-skipWhen process.env.STEROIDS_TEST_RUN_MODE, "fast"
-
 describe "module", ->
 
   afterEach =>

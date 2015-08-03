@@ -2,8 +2,6 @@ require('chai').should()
 
 steroids = require('./steroids')()
 
-skipWhen process.env.STEROIDS_TEST_RUN_MODE, "fast"
-
 describe "module", ->
   describe "install", ->
     it "is mentioned in the help string", ->
