@@ -81,3 +81,11 @@ module.exports = steroids = ->
           "--oauthTokenPath=#{oauthTokenPath}"
         )
 
+      deploy: ->
+        runSteroidsCommand(
+          "module"
+          "deploy"
+          "--moduleApiHost=https://modules-api.devgyver.com"
+          "--oauthTokenPath=#{oauthTokenPath}"
+        )
+
