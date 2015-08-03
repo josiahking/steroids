@@ -1,8 +1,11 @@
 require('chai').should()
 
-steroids = require('./steroids')()
+steroidsDriver = require('./steroids-driver')
 
 describe "module", ->
+
+  steroids = steroidsDriver()
+
   describe "install", ->
     it "is mentioned in the help string", ->
       steroids.module.help().check ({stdout}) ->

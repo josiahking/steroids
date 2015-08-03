@@ -56,6 +56,18 @@ module.exports = steroids = ->
           "--oauthTokenPath=#{oauthTokenPath}"
         )
 
+      init: (params) ->
+        checkable runSteroidsCommand(
+          "module"
+          "init"
+          "--app-id=#{params.appId}" if params.appId?
+          "--auth-token=#{params.authToken}" if params.authToken?
+          "--api-key=#{params.apiKey}" if params.apiKey?
+          "--user-id=#{params.userId}" if params.userId?
+          "--envApiHost=https://env-api.devgyver.com"
+          "--oauthTokenPath=#{oauthTokenPath}"
+        )
+
       make: ->
         checkable runGruntCommand(
           "steroids-make-module-env"
