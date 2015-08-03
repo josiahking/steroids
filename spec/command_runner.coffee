@@ -4,8 +4,9 @@ class CommandRunner
 
   constructor: (@options)->
     @cmd = @options.cmd
-    @args = @options.args || []
     @cwd = @options.cwd || ""
+    # Passing undefined elements will cause runner to fail silently
+    @args = @options.args.filter((a) -> a?) || []
 
     @timeout = @options.timeout || 20000
 

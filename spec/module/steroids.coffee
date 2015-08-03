@@ -8,10 +8,15 @@ module.exports = steroids = ->
   testHelper = new TestHelper
   testHelper.prepare()
 
-  run = (args...) ->
+  runGruntCommand = (args...) ->
     testHelper.runInProject {
-      # Passing undefined elements will cause runner to fail silently
-      args: args.filter((a) -> a?)
+      cmd: "grunt"
+      args
+    }
+
+  runSteroidsCommand = (args...) ->
+    testHelper.runInProject {
+      args
     }
 
   checkable = (runner) ->
@@ -38,16 +43,21 @@ module.exports = steroids = ->
 
     module:
       help: ->
-        checkable run(
+        checkable runSteroidsCommand(
           "module"
         )
 
       install: (name) ->
-        checkable run(
+        checkable runSteroidsCommand(
           "module"
           "install"
           name
           "--moduleApiHost=https://modules-api.devgyver.com"
           "--oauthTokenPath=#{oauthTokenPath}"
+        )
+
+      make: ->
+        checkable runGruntCommand(
+          "steroids-make-module-env"
         )
 

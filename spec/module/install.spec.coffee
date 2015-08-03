@@ -44,3 +44,8 @@ describe "module", ->
           .property("dependencies")
           .property("com.appgyver.install-test")
           .be.defined
+
+      describe "after grunt steroids-make-module-env", ->
+        it "project dist contains the installed module", ->
+          steroids.module.make().check ->
+            steroids.file("dist", "modules", "com.appgyver.install-test", "index.html").exists().should.be.true
