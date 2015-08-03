@@ -9,13 +9,13 @@ module.exports = steroids = ->
   testHelper.prepare()
 
   runGruntCommand = (args...) ->
-    testHelper.runInProject {
+    checkable testHelper.runInProject {
       cmd: "grunt"
       args
     }
 
   runSteroidsCommand = (args...) ->
-    testHelper.runInProject {
+    checkable testHelper.runInProject {
       args
     }
 
@@ -43,12 +43,12 @@ module.exports = steroids = ->
 
     module:
       help: ->
-        checkable runSteroidsCommand(
+        runSteroidsCommand(
           "module"
         )
 
       install: (name) ->
-        checkable runSteroidsCommand(
+        runSteroidsCommand(
           "module"
           "install"
           name
@@ -57,7 +57,7 @@ module.exports = steroids = ->
         )
 
       init: (params) ->
-        checkable runSteroidsCommand(
+        runSteroidsCommand(
           "module"
           "init"
           "--app-id=#{params.appId}" if params.appId?
@@ -69,7 +69,7 @@ module.exports = steroids = ->
         )
 
       make: ->
-        checkable runGruntCommand(
+        runGruntCommand(
           "steroids-make-module-env"
         )
 
