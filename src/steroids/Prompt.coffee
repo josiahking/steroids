@@ -54,7 +54,10 @@ class Prompt
           SafariDebug = require "./SafariDebug"
           safariDebug = new SafariDebug => @connectLoop()
           if commandOptions[0]?
-            safariDebug.open(commandOptions[0]).catch (error) ->
+            safariDebug.open(commandOptions[0])
+            .then ->
+              steroidsCli.globals.safariDebug.keepViewsOpen[commandOptions[0]] = true
+            .catch (error) ->
               Help.error()
               steroidsCli.log
                 message: error.message

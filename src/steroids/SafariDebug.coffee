@@ -33,6 +33,24 @@ class SafariDebug
         .catch (error) ->
           reject error
 
+  listWindows: ()=>
+    new Promise (resolve, reject) =>
+      unless steroidsCli.host.os.isOSX()
+        reject new steroidsCli.PlatformError
+        return
+
+      getWindows = if steroidsCli.host.os.osx.isYosemite()
+        @runJavaScript("yosemite-safari.js", ["safari", "listwindows"])
+        .catch (error) =>
+          reject error
+      else
+        reject new SafariDebugError "not in yosemite"
+
+      getWindows.then (windowList) =>
+        resolve windowList
+      .catch (error) =>
+        reject error
+
   listViews: ()=>
     new Promise (resolve, reject) =>
       unless steroidsCli.host.os.isOSX()

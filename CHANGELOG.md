@@ -3,6 +3,7 @@
 hidesNavigationBar parameters.
 Now you can define a tab webview and the Navigation bar parameters at the same
 time.
+- Safari debug views opened from terminal "sd getting-started.html" stay open until steroids is killed
 
 ## 4.1.13 (2015-07-31)
 

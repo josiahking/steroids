@@ -120,7 +120,7 @@ switch mainCommand
     app = firstOption
 
     app = Application(app)
-    app.activate()
+    #app.activate()
 
   when "menu"
     appName = otherOptions[0]
@@ -165,7 +165,7 @@ switch mainCommand
           console.log "Menu #{menuNames.join('->')} of #{appName} not found"
 
         menu.click()
-        app.activate()
+        #app.activate()
 
       else
         console.log "unknown menu command"
@@ -175,6 +175,10 @@ switch mainCommand
     app.launch()
 
     switch(firstOption)
+      when "listwindows"
+        for window in app.windows()
+          console.log window.name()
+
       when "listdevices"
         menuFinder = new MenuFinder
           appName: "Safari"

@@ -8,7 +8,7 @@
  #bold[and]              a             Launch Android Emulator (#yellow[Experimental])
  #bold[gen]              g             Launch Genymotion Emulator (#yellow[Experimental])
  #bold[chrome]           cd            Launch Chrome dev tools (Android)
- #bold[safari <path>]    sd            Open Safari debugger for matching path in URL location
+ #bold[safari <path>]    sd            Open Safari debugger for matching path in URL location and keep it open
                                 #underline[Note:] Enable Develop menu in: Safari -> Preferences -> Advanced
  #bold[edit]             e             Launch default editor
 

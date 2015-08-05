@@ -29,6 +29,8 @@ class Steroids
   globals:
     genymotion: null
     simulator: null
+    safariDebug:
+      keepViewsOpen: {}
 
   constructor: (@options = {}) ->
     Version = require "./steroids/version/version"
@@ -47,6 +49,32 @@ class Steroids
     @debugMessages = []
 
     @connect = null
+
+    @globals.safariDebug.openerInterval = setInterval =>
+      return unless steroidsCli.host.os.osx.isYosemite()
+
+      SafariDebug = require "./steroids/SafariDebug"
+      safariDebug = new SafariDebug
+
+      for view, keep of @globals.safariDebug.keepViewsOpen
+        do (view, keep) =>
+          safariDebug = new SafariDebug
+          safariDebug.listWindows().then (openWindows) ->
+            found = false
+            for openWindow in openWindows
+              found = true if openWindow.search(view) != -1
+
+            unless found
+              steroidsCli.debug "view #{view} not open in debugger, opening..."
+              safariDebug.open(view).catch (err) ->
+            else
+              steroidsCli.debug "view #{view} is open, not reopening"
+
+          .catch (err) ->
+            steroidsCli.debug "catched error: #{err}"
+            steroidsCli.debug "prob. osascript blowing up"
+
+    , 3000
 
   isIonicProject: ->
     fs.existsSync paths.cordovaSupport.ionicProject
