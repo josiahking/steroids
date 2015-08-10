@@ -120,6 +120,7 @@ class Converter
     return {
       fullscreen: fullscreen
       fullscreen_start_url: location
+      fullscreen_params:  @getFullScreenParams(config)
       status_bar_style: statusBar
       request_user_location: "false"
       splashscreen_duration_in_seconds: 0
@@ -205,6 +206,18 @@ class Converter
         initView
       ->
         config.initialView
+    )
+
+  getFullScreenParams: (config)->
+    @config.eitherSupersonicOrLegacy().fold(
+      ->
+        {
+          id: config.structure.rootView?.id
+          hidesNavigationBar: config.structure.rootView?.hidesNavigationBar
+          navigationBar: config.structure.rootView?.navigationBar
+        }
+      ->
+        { }
     )
 
   userFilesObject: (config)->

@@ -4,6 +4,8 @@ hidesNavigationBar parameters.
 Now you can define a tab webview and the Navigation bar parameters at the same
 time.
 
+- Added support for id and navigationBar parameters in the rootView
+
 ## 4.1.13 (2015-07-31)
 
 Changes:
