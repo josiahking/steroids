@@ -1,8 +1,9 @@
+paths = require '../../paths'
+http = require '../../httpRequest'
+RuntimeConfig = require '../../RuntimeConfig'
 
-paths = require '../paths'
-http = require '../httpRequest'
-RuntimeConfig = require '../RuntimeConfig'
-writeJsonStringTo = require './writeJsonStringTo'
+writeJsonStringTo = require '../writeJsonStringTo'
+readJsonConfigFrom = require '../readJsonConfigFrom'
 
 module.exports = refreshModule = (appId = null) ->
   appId ?= readAppId()
@@ -12,8 +13,7 @@ module.exports = refreshModule = (appId = null) ->
     .then(writeJsonStringTo paths.application.configs.module.appgyver)
 
 readAppId = ->
-  config = require paths.application.configs.module.env
-  config.appId
+  readJsonConfigFrom(paths.application.configs.module.env).appId
 
 retrieveEnvironment = (id) ->
   http.requestAuthenticated(

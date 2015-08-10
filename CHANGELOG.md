@@ -1,10 +1,9 @@
 ## 4.1.14 (TODO)
-- Updated the tabBar configuration obj to support the navigationBar and
-hidesNavigationBar parameters.
-Now you can define a tab webview and the Navigation bar parameters at the same
-time.
 
-- Added support for id and navigationBar parameters in the rootView
+Features:
+- Updated the `tabBar` configuration obj to support the `navigationBar` and `hidesNavigationBar` parameters. Now you can define a tab webview and the Navigation bar parameters at the same time.
+- Added support for `id` and `navigationBar` parameters in the rootView
+- `steroids module install` downloads Composer Modules from the public Composer Module repository
 
 ## 4.1.13 (2015-07-31)
 

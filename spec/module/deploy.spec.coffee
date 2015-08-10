@@ -1,26 +1,12 @@
-fs = require "fs"
-path = require "path"
-deepEqual = require 'deep-equal'
+require('chai').should()
 
-TestHelper = require "../test_helper"
-oauthTokenPath = require "../devgyver_oauth_token_path"
-
-skipWhen process.env.STEROIDS_TEST_RUN_MODE, "fast"
-
-file = (path) ->
-  readJson: -> JSON.parse fs.readFileSync path
-  exists: -> fs.existsSync path
-  clean: ->
-    if fs.existsSync path
-      fs.unlinkSync path
+steroidsDriver = require('./steroids-driver')
 
 describe "module", ->
 
-  rightHereRightNow =>
-    @testHelper = new TestHelper
-    @testHelper.prepare()
+  steroids = steroidsDriver()
 
-  deploymentDescriptionFile = file path.join(@testHelper.testAppPath, "config", "deployment.json")
+  deploymentDescriptionFile = steroids.file("config", "deployment.json")
   deploymentDescriptionFile.clean()
 
   getCurrentVersion = ->
@@ -29,29 +15,20 @@ describe "module", ->
   getLastUploadTimestamp = ->
     deploymentDescriptionFile.readJson().versions?[0]?.module_zip_last_uploaded_at
 
-  describe "deploy", =>
+  describe "deploy", ->
 
-    describe "when running for the first time", =>
-      it "creates a deployment description and runs grunt", =>
-        cmd = @testHelper.runInProject
-          args: [
-            "module",
-            "deploy",
-            "--moduleApiHost=https://modules-api.devgyver.com"
-            "--oauthTokenPath=#{oauthTokenPath}"
-          ]
+    describe "when running for the first time", ->
+      it "successfully runs grunt", ->
+        steroids.module.deploy().check ({stdout, stderr}) ->
+          stderr.should.be.empty
+          stdout.should.match /Running "[^"]+" task/
 
-        waitsFor ->
-          cmd.done
-
-        runs ->
-          expect(deploymentDescriptionFile.exists()).toBeTruthy()
-
-          expect(cmd.stdout.match /Running "[^"]+" task/).toBeTruthy()
+      it "creates a deployment description", ->
+        deploymentDescriptionFile.exists().should.be.true
 
       describe "deployment description", ->
         it "should have an identifier for the module", ->
-          expect(deploymentDescriptionFile.readJson().id).toBeTruthy()
+          deploymentDescriptionFile.readJson().should.have.property('id').be.defined
 
         it "should have a version identifier", ->
           expect(getCurrentVersion()).toBeTruthy()
@@ -59,54 +36,27 @@ describe "module", ->
         it "should have a last upload timestamp", ->
           expect(getLastUploadTimestamp()).toBeTruthy()
 
-    describe "when already deployed once", =>
-      it "updates the deployment description and runs grunt", =>
+    describe "when already deployed once", ->
+      it "updates the deployment description", ->
         deploymentDescription = deploymentDescriptionFile.readJson()
 
-        cmd = @testHelper.runInProject
-          args: [
-            "module",
-            "deploy",
-            "--moduleApiHost=https://modules-api.devgyver.com"
-            "--oauthTokenPath=#{oauthTokenPath}"
-          ]
+        steroids.module.deploy().check ({stdout, stderr}) ->
+          stderr.should.be.empty
 
-        waitsFor ->
-          cmd.done
+          deploymentDescription.should.not.deep.equal(deploymentDescriptionFile.readJson())
 
-        runs ->
-          freshDeploymentDescription = deploymentDescriptionFile.readJson()
-          expect(deepEqual(freshDeploymentDescription, deploymentDescription)).toBeFalsy()
-
-          expect(cmd.stdout.match /Running "[^"]+" task/).toBeTruthy()
-
-      describe "deployment description", =>
-        it "should have an identifier for the module", =>
+      describe "deployment description", ->
+        it "should have an identifier for the module", ->
           expect(deploymentDescriptionFile.readJson().id).toBeTruthy()
 
-        it "has an incremented current version and last upload timestamp", =>
+        it "has an incremented current version and last upload timestamp", ->
           lastDeployment = {
             version: getCurrentVersion()
             timestamp: getLastUploadTimestamp()
           }
 
-          cmd = @testHelper.runInProject
-            args: [
-              "module",
-              "deploy",
-              "--moduleApiHost=https://modules-api.devgyver.com"
-              "--oauthTokenPath=#{oauthTokenPath}"
-            ]
-
-          waitsFor ->
-            cmd.done
-
-          runs ->
-            expect(deepEqual(
-              lastDeployment
-              {
-                version: getCurrentVersion()
-                timestamp: getLastUploadTimestamp()
-              }
-            )).toBeFalsy()
-
+          steroids.module.deploy().check ->
+            lastDeployment.should.not.deep.equal {
+              version: getCurrentVersion()
+              timestamp: getLastUploadTimestamp()
+            }

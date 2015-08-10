@@ -5,30 +5,37 @@ module.exports = runModuleCommand = (cmd, argv) ->
     .then(->
       switch cmd
         when "create"
-          runModuleCreate = require('./create')
+          runModuleCreate = require('./commands/create')
 
           Promise.resolve(argv)
             .then(parseCreateArgs)
             .then(runModuleCreate)
 
         when "deploy"
-          runModuleDeploy = require('./deploy')
+          runModuleDeploy = require('./commands/deploy')
 
           runModuleDeploy()
 
         when "init"
-          runModuleInit = require('./init')
+          runModuleInit = require('./commands/init')
 
           Promise.resolve(argv)
             .then(parseInitArgs)
             .then(runModuleInit)
 
         when "refresh"
-          runModuleRefresh = require('./refresh')
+          runModuleRefresh = require('./commands/refresh')
 
           Promise.resolve(argv)
             .then(parseRefreshArgs)
             .then(runModuleRefresh)
+
+        when "install"
+          runModuleInstall = require('./commands/install')
+
+          Promise.resolve(argv)
+            .then(parseInstallArgs)
+            .then(runModuleInstall)
 
         else
           Usage = require "../usage"
@@ -54,15 +61,22 @@ parseInitArgs = (argv) ->
 parseRefreshArgs = (argv) ->
   argv['app-id']
 
+parseInstallArgs = (argv) ->
+  [section, command, moduleName] = argv._
+
+  { moduleName }
+
 handleKnownErrorStates = (error) ->
   if (error.message.match /Please run again with/) or (error.message.match /endpoint requires authentication/)
     log.error error.message
-  else if error.message.match /Cannot find module/
+  else if error.message.match /Could not parse JSON configuration/
     log.error "Please run `steroids module init` first."
   else if error.message.match /Did not recognize command/
     log.error error.message
     console.log "Please see `steroids help` for available commands."
+  else if error.message.match /not published/
+    log.error error.message
   else
     throw error
 
-  process.exit(-1)
+  process.exit(1)
