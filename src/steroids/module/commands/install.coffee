@@ -20,6 +20,8 @@ module.exports = installModule = (args) ->
       Module name required.
 
       Please run again with the target module name as an argument.
+
+      Find installable Modules at: https://composer2.appgyver.com/web_components
     """
 
   moduleApi.repository
