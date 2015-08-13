@@ -86,6 +86,19 @@ To develop Steroids-npm locally:
 * Create a symlink from `/usr/local/bin/devroids` to your development Steroids executable.
 * Use `devroids` as you would use `steroids`.
 
+## Deployment
+
+Steroids is deployed via [Travis-CI](https://travis-ci.org/AppGyver/steroids). Tagging a version and pushing to Github is sufficient for Travis to make a release. For example:
+
+    npm version patch
+    git push origin master --tags
+
+Travis will publish to npm if and only if tests pass for the tagged release.
+
+### Continuous integration setup notes
+
+Steroids' CI setup relies on a custom OS X box, which happens to lack NVM for setting up the Node.js environment. This is why the `.travis.yml` configuration is a bit nonstandard, and we use custom installation scripts for handling dependencies. Please refer to `./scripts/travis`.
+
 ## Statistics
 
 [![NPM](https://nodei.co/npm-dl/steroids.png?height=3)](https://nodei.co/npm/steroids/)

@@ -2,6 +2,11 @@ sudo: false
 cache:
   directories:
   - node_modules
+# KLUDGE: The following declarations are excluded by purpose. Our OSX boxes do not have NVM on them.
+# SEE: ./scripts/travis/install.sh
+# language: node_js
+# node_js:
+#  - "0.10"
 os:
 - osx
 - linux
