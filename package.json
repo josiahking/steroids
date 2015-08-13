@@ -1,6 +1,6 @@
 {
   "name": "steroids",
-  "version": "4.1.14",
+  "version": "4.1.15",
   "preferGlobal": "true",
   "license": "MIT",
   "author": "AppGyver <contact@appgyver.com>",
@@ -79,7 +79,7 @@
     "express-json": "1.0.0",
     "figlet": "1.1.0",
     "fs-extra": "0.13.0",
-    "generator-steroids": "1.0.19",
+    "generator-steroids": "1.0.20",
     "grunt": "0.4.5",
     "inquirer": "0.3.4",
     "ios-sim": "http://steroids-assets.appgyver.com/ios-sim-3.1.1-AppGyver-p1.tgz",
@@ -99,21 +99,12 @@
     "semver": "2.3.1",
     "wrench": "1.5.4",
     "yeoman-generator": "0.17.7",
-    "q": "0.9.7",
-    "chalk": "0.3.0",
-    "generator-steroids": "1.0.20",
-    "js-yaml": "3.0.2",
-    "express-json": "1.0.0",
     "winston": "0.9.0",
-    "body-parser": "1.8.1",
     "steroids-android-packages": "http://steroids-assets.appgyver.com/steroids-android-packages-0.0.10.tgz",
     "steroids-connect": "1.0.34",
     "steroids-ios-packages": "http://steroids-assets.appgyver.com/steroids-ios-packages-4.0.5.tgz",
     "tiny-lr": "http://steroids-assets.appgyver.com/tiny-lr-0.1.4-AppGyver-p0.tgz",
-    "winston": "0.9.0",
-    "wrench": "1.5.4",
     "xml2js": "0.4.4",
-    "xmlbuilder": "2.6.1",
-    "yeoman-generator": "0.17.7"
+    "xmlbuilder": "2.6.1"
   }
 }
