@@ -13,7 +13,3 @@ elif [ "$UNAME" = "Linux" ]; then
 else
   echo "Unknown uname: $UNAME"
 fi
-
-# Announce node and npm versions for build debuggability
-echo node version: $(node --version)
-echo npm version: $(npm -v)
