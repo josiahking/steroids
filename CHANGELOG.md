@@ -1,3 +1,8 @@
+## 4.1.15 (2015-08-13)
+
+Features:
+- Updated iOS Simulator to use v4.0.5 of the AppGyver Wrapper.
+
 ## 4.1.14 (2015-08-12)
 
 Features:
