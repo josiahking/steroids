@@ -9,6 +9,7 @@ chalk = require "chalk"
 
 Help = require "./steroids/Help"
 paths = require "./steroids/paths"
+detectSteroidsProject = require './steroids/paths/detect-steroids-project'
 
 Promise.onPossiblyUnhandledRejection (e, promise) ->
   throw e
@@ -75,7 +76,7 @@ class Steroids
     return contents
 
   detectSteroidsProject: ->
-    return fs.existsSync(paths.application.configDir) and (fs.existsSync(paths.application.appDir) or fs.existsSync(paths.application.wwwDir))
+    detectSteroidsProject(paths)
 
   debug: (options = {}, other) =>
     message = if other?
