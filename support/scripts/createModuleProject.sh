@@ -29,10 +29,7 @@ function create_managed_project_structure {
 
 function install_dependencies {
   echo "Will install dependencies, please be patient ..."
-  npm install
-  bower install
-  cd mobile
-  steroids update
+  make install
 }
 
 function remove_git_from_project {
