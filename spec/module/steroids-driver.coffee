@@ -11,6 +11,13 @@ module.exports = steroids = ->
   }
   testHelper.prepare()
 
+  runMobileHarnessGruntCommand = (args...) ->
+    checkable testHelper.runInProject {
+      cmd: "grunt"
+      cwd: path.join testHelper.testAppPath, "mobile"
+      args
+    }
+
   runGruntCommand = (args...) ->
     checkable testHelper.runInProject {
       cmd: "grunt"
@@ -71,11 +78,6 @@ module.exports = steroids = ->
           "--oauthTokenPath=#{oauthTokenPath}"
         )
 
-      make: ->
-        runGruntCommand(
-          "steroids-make-module-env"
-        )
-
       refresh: ->
         runSteroidsCommand(
           "module"
@@ -91,4 +93,10 @@ module.exports = steroids = ->
           "--moduleApiHost=https://modules-api.devgyver.com"
           "--oauthTokenPath=#{oauthTokenPath}"
         )
+
+      mobileHarness:
+        make: ->
+          runMobileHarnessGruntCommand(
+            "steroids-make-module-env"
+          )
 

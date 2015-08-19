@@ -47,6 +47,13 @@ describe "module", ->
           .be.defined
 
       describe "after grunt steroids-make-module-env", ->
-        it "project dist contains the installed module", ->
-          steroids.module.make().check ->
-            steroids.file("dist", "modules", "com.appgyver.install-test", "index.html").exists().should.be.true
+        it "mobile harness dist contains the installed module", ->
+          # Make requires an initialized module
+          steroids.module.init(
+            appId: 1066
+            authToken: "62e937eb1f5870ab5da0cf0dafe2d850"
+            apiKey: "60fad5ac56b50ab80bfecda1e32a8e274f3030157d680a677c9fd435c3adc2f5"
+            userId: 1041
+          ).check ->
+            steroids.module.mobileHarness.make().check ->
+              steroids.file("mobile", "dist", "modules", "com.appgyver.install-test", "index.html").exists().should.be.true
