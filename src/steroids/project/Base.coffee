@@ -96,7 +96,7 @@ module.exports = class ProjectBase
 
         steroidsCli.debug "Running Grunt tasks..."
 
-        grunt = new Grunt()
+        grunt = new Grunt(paths.applicationDir)
         grunt
           .run({tasks: [steroidsCli.options.argv["gruntTask"] || "default"]})
           .then =>

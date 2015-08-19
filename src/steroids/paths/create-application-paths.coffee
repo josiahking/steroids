@@ -85,6 +85,7 @@ module.exports = createApplicationPaths = (applicationDir, argv = {}) ->
       ionicProject: path.join @applicationDir, "ionic.project"
 
     @modules:
+      projectRootDir: path.join applicationDir, ".."
       webHarnessDir: path.join applicationDir, "..", "web"
 
     @application.dist =

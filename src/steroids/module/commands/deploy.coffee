@@ -82,7 +82,7 @@ packageModuleToDist = ->
   console.log "About to run Grunt tasks..."
 
   gruntTask = steroidsCli.options.argv["gruntTask"] || "default"
-  new Grunt()
+  new Grunt(paths.modules.projectRootDir)
     .run(tasks: [gruntTask])
     .then ->
       log.ok "Successfully compiled module"
