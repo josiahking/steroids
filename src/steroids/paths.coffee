@@ -2,10 +2,13 @@ path = require "path"
 pathExtra = require "path-extra"
 argv = global.argv ? {}
 
+determineApplicationDir = require './paths/determine-application-dir'
+determineUserHome = require './paths/determine-user-home'
+
 class Paths
 
   @npm: path.join __dirname, "..", ".."
-  @applicationDir: process.cwd()
+  @applicationDir: determineApplicationDir()
   @steroids: path.join @npm, "bin", "steroids"
 
   @globalPrefix: (cb) ->
@@ -129,7 +132,7 @@ class Paths
   @temporaryZip: path.join pathExtra.tempdir(), "steroids_project.zip"
   @vendor: path.join @npm, "vendor"
 
-  @userHome: if process.platform == 'win32' then process.env.USERPROFILE else process.env.HOME
+  @userHome: determineUserHome()
   @storedSettings: path.join @userHome, ".appgyver"
   @oauthTokenPath: argv.oauthTokenPath ? path.join @storedSettings, "token.json"
 
