@@ -85,8 +85,11 @@ module.exports = createApplicationPaths = (applicationDir, argv = {}) ->
       ionicProject: path.join @applicationDir, "ionic.project"
 
     @modules:
+      mobileHarnessDir: applicationDir
       projectRootDir: path.join applicationDir, ".."
       webHarnessDir: path.join applicationDir, "..", "web"
+      composerModulesDir: path.join applicationDir, "..", "composer_modules"
+      distDir: path.join applicationDir, "..", "dist"
 
     @application.dist =
       appgyverSettings: path.join @application.distDir, "__appgyver_settings.json"
