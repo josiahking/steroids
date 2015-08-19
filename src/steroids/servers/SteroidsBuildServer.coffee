@@ -15,9 +15,11 @@ module.exports = class SteroidsBuildServer extends BuildServerBase
     super options
 
   createExpressApp: ->
-    app = super()
-
     if detectComposerModuleProject paths
+      # KLUDGE: Everything was served as application/json unless this came first
+      app = express()
       app.use "/__module/harness", express.static paths.modules.webHarnessDir
-
-    app
+      app.use super()
+      app
+    else
+      super()
