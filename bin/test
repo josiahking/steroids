@@ -78,7 +78,7 @@ elif [ "$MODE" == "release" ]; then
   fi
 
 
-  CREATE_TESTAPP_CMD="bin/steroids create __testApp --type=mpa --language=coffee"
+  CREATE_TESTAPP_CMD="bin/steroids create __testApp --type=mpa --language=coffee && bin/steroids module create __testModule"
   echo "Now running: $ $CREATE_TESTAPP_CMD"
 
   echo "ok? (Y/n)"
@@ -89,6 +89,7 @@ elif [ "$MODE" == "release" ]; then
     rm -rf __testApp
     $CREATE_TESTAPP_CMD
     cd __testApp && ../bin/steroids make && cd ..
+    cd __testModule && grunt && cd ..
   else
     echo "not creating"
   fi
@@ -108,7 +109,12 @@ fi
 
 
 if [ ! -d "__testApp" ]; then
-  echo "__testApp does not exists, create with bin/test release"
+  echo "__testApp does not exist, create with bin/test release"
+  exit 1
+fi
+
+if [ ! -d "__testModule" ]; then
+  echo "__testModule does not exist, create with bin/test release"
   exit 1
 fi
 

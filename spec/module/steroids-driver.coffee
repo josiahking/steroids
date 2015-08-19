@@ -5,7 +5,10 @@ TestHelper = require "../test_helper"
 oauthTokenPath = require "../devgyver_oauth_token_path"
 
 module.exports = steroids = ->
-  testHelper = new TestHelper
+  testHelper = new TestHelper {
+    testAppName: 'testModule'
+    testBaseApp: '__testModule'
+  }
   testHelper.prepare()
 
   runGruntCommand = (args...) ->
