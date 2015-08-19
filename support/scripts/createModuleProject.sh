@@ -4,7 +4,7 @@
 set -e
 
 BASE_MODULE_NAME="base-module-structure"
-BASE_MODULE_REPO="git@github.com:AppGyver/${BASE_MODULE_NAME}.git"
+BASE_MODULE_REPO="git://github.com/AppGyver/${BASE_MODULE_NAME}.git"
 BASE_REMOTE_NAME="base"
 MODULE_REMOTE_NAME="origin"
 MODULE_REPO_URL="$2"
