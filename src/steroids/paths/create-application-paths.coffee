@@ -84,6 +84,9 @@ module.exports = createApplicationPaths = (applicationDir, argv = {}) ->
       iosNativeCssDist: path.join pathExtra.tempdir(), "steroids", "dist", "native-styles", "ios.css"
       ionicProject: path.join @applicationDir, "ionic.project"
 
+    @modules:
+      webHarnessDir: path.join applicationDir, "..", "web"
+
     @application.dist =
       appgyverSettings: path.join @application.distDir, "__appgyver_settings.json"
       configIosXml: path.join @application.distDir, "config.ios.xml"

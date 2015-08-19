@@ -1,5 +1,3 @@
-Server = require "../Server"
-Converter = require "../Converter"
 util = require "util"
 request = require "request"
 semver = require "semver"
@@ -8,14 +6,14 @@ winston = require "winston"
 bodyParser = require "body-parser"
 express = require "express"
 tinylr = require "tiny-lr"
-
 fs = require "fs"
+
 paths = require "../paths"
-
 Updater = require "../Updater"
-
 Deploy = require "../Deploy"
 Data = require "../Data"
+Server = require "../Server"
+Converter = require "../Converter"
 
 class ClientResolver
 
@@ -78,12 +76,17 @@ module.exports = class BuildServerBase extends Server
 
     super(@options)
 
-    @tinylr = tinylr.middleware(app: @app, server: @server.server)
+  createExpressApp: ->
+    app = super()
 
-    @app.use express.static(paths.connectStaticFiles)
-    @app.use express.static(@options.distDir)
-    @app.use bodyParser.json()
-    @app.use @tinylr.middleware
+    @tinylr = tinylr.middleware(app: app, server: @server.server)
+
+    app.use express.static(paths.connectStaticFiles)
+    app.use express.static(@options.distDir)
+    app.use bodyParser.json()
+    app.use @tinylr.middleware
+
+    app
 
   triggerLiveReload: ->
     @tinylr.server.changed
