@@ -87,11 +87,15 @@ elif [ "$MODE" == "release" ]; then
   betterRead BASE_APP_OK
 
   if [ "$BASE_APP_OK" != "n" ]; then
-    rm -rf __testApp
+    if [ -d "__testApp" ]; then
+      rm -rf __testApp
+    fi
     $CREATE_TESTAPP_CMD
     cd __testApp && ../bin/steroids make && cd ..
 
-    rm -rf __testModule
+    if [ -d "__testModule" ]; then
+      rm -rf __testModule
+    fi
     $CREATE_TESTMODULE_CMD
     cd __testModule && grunt && cd ..
   else
