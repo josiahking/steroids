@@ -11,8 +11,8 @@ moduleApi = require '../moduleApi'
 writeJsonStringTo = require '../writeJsonStringTo'
 readJsonConfigFrom = require '../readJsonConfigFrom'
 
-MODULE_DIR = paths.application.composerModulesDir
-MODULE_PACKAGE_PATH = paths.application.configs.module.package
+MODULE_DIR = paths.modules.composerModulesDir
+MODULE_PACKAGE_PATH = paths.modules.configs.package
 
 module.exports = installModule = (args) ->
   unless args.moduleName

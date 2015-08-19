@@ -70,7 +70,6 @@ module.exports = createApplicationPaths = (applicationDir, argv = {}) ->
       wwwDir: path.join @applicationDir, "www"
       nodeModulesDir: path.join @applicationDir, "node_modules"
       bowerComponentsDir: path.join @applicationDir, "bower_components"
-      composerModulesDir: path.join @applicationDir, "composer_modules"
       logDir: path.join @applicationDir, "logs"
       logFile: path.join @applicationDir, "logs", "steroids.log"
 
@@ -90,6 +89,13 @@ module.exports = createApplicationPaths = (applicationDir, argv = {}) ->
       webHarnessDir: path.join applicationDir, "..", "web"
       composerModulesDir: path.join applicationDir, "..", "composer_modules"
       distDir: path.join applicationDir, "..", "dist"
+      configDir: path.join applicationDir, "..", "config"
+
+    @modules.configs =
+      appgyver: path.join @modules.configDir, "appgyver.json"
+      env: path.join @modules.configDir, "env.json"
+      deployment: argv.deploymentJsonPath ? path.join @modules.configDir, "deployment.json"
+      package: path.join @modules.configDir, "module.json"
 
     @application.dist =
       appgyverSettings: path.join @application.distDir, "__appgyver_settings.json"
@@ -112,11 +118,6 @@ module.exports = createApplicationPaths = (applicationDir, argv = {}) ->
         raml: path.join @application.configDir, "cloud-resources.raml"
       legacy:
         bower: path.join @application.configDir, "bower.json"
-      module:
-        appgyver: path.join @application.configDir, "appgyver.json"
-        env: path.join @application.configDir, "env.json"
-        deployment: argv.deploymentJsonPath ? path.join @application.configDir, "deployment.json"
-        package: path.join @application.configDir, "module.json"
 
     @application.sources =
       controllerDir: path.join @application.appDir, "controllers"

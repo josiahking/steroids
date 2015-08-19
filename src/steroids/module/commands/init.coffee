@@ -16,7 +16,7 @@ module.exports = initModule = (options) ->
     """
 
   Promise.resolve(options)
-    .then(writeJsonStringTo paths.application.configs.module.env)
+    .then(writeJsonStringTo paths.modules.configs.env)
     .then(refreshModule)
     .then ->
       Help.SUCCESS()
