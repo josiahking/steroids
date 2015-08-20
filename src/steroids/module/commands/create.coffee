@@ -35,7 +35,7 @@ module.exports = createModuleProject = ({ moduleName, repoUrl }) ->
         1. Run `cd #{moduleName}`
         2. Retrieve and run a module initialization command from Composer 2:
            https://composer2.appgyver.com/modules/connect
-        3. Run `cd mobile && steroids connect`
+        3. Run `steroids connect`
 
         Good luck!
       """

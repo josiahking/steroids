@@ -27,7 +27,7 @@ module.exports = initModule = (options) ->
         =====
 
         - Start development by connecting with Steroids:
-          Run `cd mobile && steroids connect`
+          Run `steroids connect`
         - If your Composer 2 application configuration changes:
           Run `steroids module refresh`
       """
