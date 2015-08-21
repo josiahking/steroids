@@ -1,3 +1,11 @@
+## 4.1.16 (TODO)
+
+Features:
+- Steroids Connect has a *module* tab for working on Composer Modules
+
+Changes:
+- `$ steroids connect` can be run in Composer Module project root
+
 ## 4.1.15 (2015-08-13)
 
 Features:
