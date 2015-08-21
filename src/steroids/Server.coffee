@@ -29,14 +29,18 @@ class Server
 
 
   constructor: (@options) ->
+    # TODO: Why is the path checked if it's not used?
     throw "path must be specified" unless @options.path
-
-    @app = express()
-
-    @app.use express.static(paths.staticFiles)
-    @app.use json()
-
+    @app = @createExpressApp()
     @port = @options.port
+
+  createExpressApp: ->
+    app = express()
+
+    app.use express.static(paths.staticFiles)
+    app.use json()
+
+    app
 
   port: undefined
 

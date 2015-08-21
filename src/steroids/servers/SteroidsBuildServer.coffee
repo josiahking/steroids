@@ -1,4 +1,8 @@
+express = require "express"
+
 paths = require "../paths"
+detectComposerModuleProject = require "../paths/detect-composer-module-project"
+
 BuildServerBase = require "./BuildServerBase"
 
 module.exports = class SteroidsBuildServer extends BuildServerBase

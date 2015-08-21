@@ -21,7 +21,7 @@ describe "module", ->
       it "successfully runs grunt", ->
         steroids.module.deploy().check ({stdout, stderr}) ->
           stderr.should.be.empty
-          stdout.should.match /Running "[^"]+" task/
+          stdout.should.match /Done, without errors/
 
       it "creates a deployment description", ->
         deploymentDescriptionFile.exists().should.be.true

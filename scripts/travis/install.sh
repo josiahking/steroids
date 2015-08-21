@@ -13,3 +13,7 @@ elif [ "$UNAME" = "Linux" ]; then
 else
   echo "Unknown uname: $UNAME"
 fi
+
+echo "installing common node deps"
+
+npm install -g grunt-cli bower

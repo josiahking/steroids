@@ -96,13 +96,15 @@ module.exports = class ProjectBase
 
         steroidsCli.debug "Running Grunt tasks..."
 
-        grunt = new Grunt()
-        grunt.run {tasks: [steroidsCli.options.argv["gruntTask"] || "default"]}, =>
-          unless steroidsCli.options.argv.noSettingsJson == true
-            @createSettingsJson()
-          @createConfigXml()
-          @createConfigJson()
-          options.onSuccess.call() if options.onSuccess?
+        grunt = new Grunt(paths.applicationDir)
+        grunt
+          .run({tasks: [steroidsCli.options.argv["gruntTask"] || "default"]})
+          .then =>
+            unless steroidsCli.options.argv.noSettingsJson == true
+              @createSettingsJson()
+            @createConfigXml()
+            @createConfigJson()
+            options.onSuccess?()
 
       ).catch (errorMessage)->
         Help.error()

@@ -79,16 +79,25 @@ elif [ "$MODE" == "release" ]; then
 
 
   CREATE_TESTAPP_CMD="bin/steroids create __testApp --type=mpa --language=coffee"
-  echo "Now running: $ $CREATE_TESTAPP_CMD"
+  CREATE_TESTMODULE_CMD="bin/steroids module create __testModule"
+  echo "Now running: $ $CREATE_TESTAPP_CMD && $CREATE_TESTMODULE_CMD"
 
   echo "ok? (Y/n)"
 
   betterRead BASE_APP_OK
 
   if [ "$BASE_APP_OK" != "n" ]; then
-    rm -rf __testApp
+    if [ -d "__testApp" ]; then
+      rm -rf __testApp
+    fi
     $CREATE_TESTAPP_CMD
     cd __testApp && ../bin/steroids make && cd ..
+
+    if [ -d "__testModule" ]; then
+      rm -rf __testModule
+    fi
+    $CREATE_TESTMODULE_CMD
+    cd __testModule && grunt && cd ..
   else
     echo "not creating"
   fi
@@ -108,7 +117,12 @@ fi
 
 
 if [ ! -d "__testApp" ]; then
-  echo "__testApp does not exists, create with bin/test release"
+  echo "__testApp does not exist, create with bin/test release"
+  exit 1
+fi
+
+if [ ! -d "__testModule" ]; then
+  echo "__testModule does not exist, create with bin/test release"
   exit 1
 fi
 

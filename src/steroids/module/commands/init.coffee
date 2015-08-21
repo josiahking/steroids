@@ -16,7 +16,7 @@ module.exports = initModule = (options) ->
     """
 
   Promise.resolve(options)
-    .then(writeJsonStringTo paths.application.configs.module.env)
+    .then(writeJsonStringTo paths.modules.configs.env)
     .then(refreshModule)
     .then ->
       Help.SUCCESS()
@@ -27,7 +27,7 @@ module.exports = initModule = (options) ->
         =====
 
         - Start development by connecting with Steroids:
-          Run `cd mobile && steroids connect`
+          Run `steroids connect`
         - If your Composer 2 application configuration changes:
           Run `steroids module refresh`
       """

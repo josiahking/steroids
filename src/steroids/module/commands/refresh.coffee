@@ -10,10 +10,10 @@ module.exports = refreshModule = (appId = null) ->
 
   Promise.resolve(appId)
     .then(retrieveEnvironment)
-    .then(writeJsonStringTo paths.application.configs.module.appgyver)
+    .then(writeJsonStringTo paths.modules.configs.appgyver)
 
 readAppId = ->
-  readJsonConfigFrom(paths.application.configs.module.env).appId
+  readJsonConfigFrom(paths.modules.configs.env).appId
 
 retrieveEnvironment = (id) ->
   http.requestAuthenticated(

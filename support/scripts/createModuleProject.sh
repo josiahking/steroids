@@ -4,7 +4,7 @@
 set -e
 
 BASE_MODULE_NAME="base-module-structure"
-BASE_MODULE_REPO="git@github.com:AppGyver/${BASE_MODULE_NAME}.git"
+BASE_MODULE_REPO="git://github.com/AppGyver/${BASE_MODULE_NAME}.git"
 BASE_REMOTE_NAME="base"
 MODULE_REMOTE_NAME="origin"
 MODULE_REPO_URL="$2"
@@ -29,10 +29,7 @@ function create_managed_project_structure {
 
 function install_dependencies {
   echo "Will install dependencies, please be patient ..."
-  npm install
-  bower install
-  cd mobile
-  steroids update
+  make install
 }
 
 function remove_git_from_project {

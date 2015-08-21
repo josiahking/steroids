@@ -5,8 +5,18 @@ TestHelper = require "../test_helper"
 oauthTokenPath = require "../devgyver_oauth_token_path"
 
 module.exports = steroids = ->
-  testHelper = new TestHelper
+  testHelper = new TestHelper {
+    testAppName: 'testModule'
+    testBaseApp: '__testModule'
+  }
   testHelper.prepare()
+
+  runMobileHarnessGruntCommand = (args...) ->
+    checkable testHelper.runInProject {
+      cmd: "grunt"
+      cwd: path.join testHelper.testAppPath, "mobile"
+      args
+    }
 
   runGruntCommand = (args...) ->
     checkable testHelper.runInProject {
@@ -68,11 +78,6 @@ module.exports = steroids = ->
           "--oauthTokenPath=#{oauthTokenPath}"
         )
 
-      make: ->
-        runGruntCommand(
-          "steroids-make-module-env"
-        )
-
       refresh: ->
         runSteroidsCommand(
           "module"
@@ -88,4 +93,10 @@ module.exports = steroids = ->
           "--moduleApiHost=https://modules-api.devgyver.com"
           "--oauthTokenPath=#{oauthTokenPath}"
         )
+
+      mobileHarness:
+        make: ->
+          runMobileHarnessGruntCommand(
+            "steroids-make-module-env"
+          )
 

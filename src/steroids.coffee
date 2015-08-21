@@ -10,6 +10,10 @@ chalk = require "chalk"
 Help = require "./steroids/Help"
 paths = require "./steroids/paths"
 
+detectSteroidsProject = require './steroids/paths/detect-steroids-project'
+detectIonicProject = require './steroids/paths/detect-ionic-project'
+detectCordovaProject = require './steroids/paths/detect-cordova-project'
+
 Promise.onPossiblyUnhandledRejection (e, promise) ->
   throw e
 
@@ -49,10 +53,10 @@ class Steroids
     @connect = null
 
   isIonicProject: ->
-    fs.existsSync paths.cordovaSupport.ionicProject
+    detectIonicProject paths
 
   isCordovaProject: ->
-    fs.existsSync paths.cordovaSupport.configXml
+    detectCordovaProject paths
 
   host:
     os:
@@ -75,7 +79,7 @@ class Steroids
     return contents
 
   detectSteroidsProject: ->
-    return fs.existsSync(paths.application.configDir) and (fs.existsSync(paths.application.appDir) or fs.existsSync(paths.application.wwwDir))
+    detectSteroidsProject(paths)
 
   debug: (options = {}, other) =>
     message = if other?

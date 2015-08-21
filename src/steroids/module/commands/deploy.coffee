@@ -82,12 +82,12 @@ packageModuleToDist = ->
   console.log "About to run Grunt tasks..."
 
   gruntTask = steroidsCli.options.argv["gruntTask"] || "default"
-  new Grunt()
+  new Grunt(paths.modules.projectRootDir)
     .run(tasks: [gruntTask])
     .then ->
       log.ok "Successfully compiled module"
 
-      paths.application.distDir
+      paths.modules.distDir
 
 zipModuleDist = (distDir) ->
   console.log "About to package module dist..."
@@ -132,7 +132,7 @@ announceUploadCompleted = (moduleId, moduleVersionId) ->
         module_zip_last_uploaded_at: (new Date).toISOString()
   )
 
-deploymentDescriptionPath = paths.application.configs.module.deployment
+deploymentDescriptionPath = paths.modules.configs.deployment
 
 readDeploymentDescription = ->
   new Promise (resolve) ->
