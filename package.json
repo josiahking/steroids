@@ -97,14 +97,14 @@
     "request": "2.53.0",
     "restler": "3.2.2",
     "semver": "2.3.1",
-    "wrench": "1.5.4",
-    "yeoman-generator": "0.17.7",
-    "winston": "0.9.0",
     "steroids-android-packages": "http://steroids-assets.appgyver.com/steroids-android-packages-0.0.10.tgz",
-    "steroids-connect": "1.0.34",
+    "steroids-connect": "1.1.0",
     "steroids-ios-packages": "http://steroids-assets.appgyver.com/steroids-ios-packages-4.0.5.tgz",
     "tiny-lr": "http://steroids-assets.appgyver.com/tiny-lr-0.1.4-AppGyver-p0.tgz",
+    "winston": "0.9.0",
+    "wrench": "1.5.4",
     "xml2js": "0.4.4",
-    "xmlbuilder": "2.6.1"
+    "xmlbuilder": "2.6.1",
+    "yeoman-generator": "0.17.7"
   }
 }
