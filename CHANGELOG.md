@@ -1,4 +1,4 @@
-## 4.1.16 (TODO)
+## 4.1.16 (2015-08-24)
 
 Features:
 - Steroids Connect has a *module* tab for working on Composer Modules
