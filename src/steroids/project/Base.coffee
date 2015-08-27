@@ -33,62 +33,66 @@ module.exports = class ProjectBase
         resolve()
 
   preMake: (options = {}) =>
-    if @config.hooks.preMake.cmd and @config.hooks.preMake.args
+    new Promise (resolve, reject) =>
 
-      util.log "preMake starting: #{@config.hooks.preMake.cmd} with #{@config.hooks.preMake.args}"
+      if @config.hooks.preMake.cmd and @config.hooks.preMake.args
 
-      preMakeSbawn = sbawn
-        cmd: @config.hooks.preMake.cmd
-        args: @config.hooks.preMake.args
-        stdout: true
-        stderr: true
+        util.log "preMake starting: #{@config.hooks.preMake.cmd} with #{@config.hooks.preMake.args}"
 
-      steroidsCli.debug "preMake spawned"
+        preMakeSbawn = sbawn
+          cmd: @config.hooks.preMake.cmd
+          args: @config.hooks.preMake.args
+          stdout: true
+          stderr: true
 
-      preMakeSbawn.on "exit", =>
-        errorCode = preMakeSbawn.code
+        steroidsCli.debug "preMake spawned"
 
-        if errorCode == 137 and @config.hooks.preMake.cmd == "grunt"
-          util.log "command was grunt build which exists with 137 when success, setting error code to 0"
-          errorCode = 0
+        preMakeSbawn.on "exit", =>
+          errorCode = preMakeSbawn.code
 
-        util.log "preMake done"
+          if errorCode == 137 and @config.hooks.preMake.cmd == "grunt"
+            util.log "command was grunt build which exists with 137 when success, setting error code to 0"
+            errorCode = 0
 
-        if errorCode == 0
-          options.onSuccess.call() if options.onSuccess?
-        else
-          util.log "preMake resulted in error code: #{errorCode}"
-          options.onFailure.call() if options.onFailure?
+          util.log "preMake done"
 
-    else
-      options.onSuccess.call() if options.onSuccess?
+          if errorCode == 0
+            resolve()
+          else
+            util.log "preMake resulted in error code: #{errorCode}"
+            reject new Error "preMake resulted in error code: #{errorCode}"
+
+      else
+        resolve()
 
 
   postMake: (options = {}) =>
-    if @config.hooks.postMake.cmd and @config.hooks.postMake.args
+    new Promise (resolve, reject) =>
 
-      util.log "postMake started"
+      if @config.hooks.postMake.cmd and @config.hooks.postMake.args
 
-      postMakeSbawn = sbawn
-        cmd: @config.hooks.postMake.cmd
-        args: @config.hooks.postMake.args
-        stdout: true
-        stderr: true
+        util.log "postMake started"
 
-      postMakeSbawn.on "exit", =>
-        util.log "postMake done"
+        postMakeSbawn = sbawn
+          cmd: @config.hooks.postMake.cmd
+          args: @config.hooks.postMake.args
+          stdout: true
+          stderr: true
 
-        options.onSuccess.call() if options.onSuccess?
-    else
-      options.onSuccess.call() if options.onSuccess?
+        postMakeSbawn.on "exit", =>
+          util.log "postMake done"
+
+          resolve()
+      else
+        resolve()
 
   makeOnly: (options = {}) => # without hooks
     if options.cordova
-      steroidsCli.debug "Running Grunt tasks for Cordova project..."
+      new Promise (resolve, reject) =>
+        steroidsCli.debug "Running Grunt tasks for Cordova project..."
+        @copyCordovaFiles()
 
-      @copyCordovaFiles()
-
-      options.onSuccess?.call()
+        resolve()
     else
       applicationConfigUpdater = new ApplicationConfigUpdater
 
@@ -104,7 +108,6 @@ module.exports = class ProjectBase
               @createSettingsJson()
             @createConfigXml()
             @createConfigJson()
-            options.onSuccess?()
 
       ).catch (errorMessage)->
         Help.error()
@@ -115,21 +118,18 @@ module.exports = class ProjectBase
 
     steroidsCli.debug "Making with hooks."
 
-    new Promise (resolve, reject) =>
-
+    (new Promise (resolve, reject) =>
       try
         @config = steroidsCli.config.getCurrent()
+        resolve()
       catch e
         reject new MakeError "Could not get project configuration. Is everything set up right in the config/ folder?"
+    ).then =>
+      @preMake(options).then =>
+        @makeOnly(options).then =>
+          @postMake options
 
-      @preMake
-        onFailure: reject
-        onSuccess: =>
-          @makeOnly
-            onFailure: reject
-            onSuccess: =>
-              @postMake options
-              resolve()
+
 
   package: (options = {}) =>
     steroidsCli.debug "Packaging project..."
