@@ -65,11 +65,12 @@
     "jasmine-node": "1.14.5"
   },
   "dependencies": {
+    "baconjs": "^0.7.71",
     "bluebird": "2.9.34",
     "body-parser": "1.8.1",
     "bower": "1.3.8",
     "chalk": "0.3.0",
-    "chokidar": "1.0.0-rc3",
+    "chokidar": "1.0.5",
     "chrome-cli": "http://steroids-assets.appgyver.com/chrome-cli-1.5.0-AppGyver-p0.tgz",
     "coffee-script": "1.6.3",
     "colorize": "0.1.0",

@@ -90,6 +90,7 @@ module.exports = createApplicationPaths = (applicationDir, argv = {}) ->
       composerModulesDir: path.join applicationDir, "..", "composer_modules"
       distDir: path.join applicationDir, "..", "dist"
       configDir: path.join applicationDir, "..", "config"
+      srcDir: path.join applicationDir, "..", "src"
 
     @modules.configs =
       appgyver: path.join @modules.configDir, "appgyver.json"
