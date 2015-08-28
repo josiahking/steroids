@@ -105,6 +105,7 @@ module.exports = createApplicationPaths = (applicationDir, argv = {}) ->
 
     @application.configs =
       app: path.join @application.configDir, "app.coffee"
+      appgyver: path.join @application.configDir, "appgyver.json"
       appgyverSettings: path.join @application.distDir, "__appgyver_settings.json"
       application: path.join @application.configDir, "application.coffee"
       bower: path.join @applicationDir, "bower.json"

@@ -10,7 +10,7 @@ module.exports = refreshModule = (appId = null) ->
 
   Promise.resolve(appId)
     .then(retrieveEnvironment)
-    .then(writeJsonStringTo paths.modules.configs.appgyver)
+    .then(writeJsonStringTo pickConfigurationFile())
 
 readAppId = ->
   readJsonConfigFrom(paths.modules.configs.env).appId
@@ -21,3 +21,11 @@ retrieveEnvironment = (id) ->
     url: RuntimeConfig.endpoints.getEnvApiUrl(id)
     json: true
   )
+
+# KLUDGE: Packager needs to be able to run `steroids module refresh` in a regular steroids project
+pickConfigurationFile = ->
+  switch steroidsCli.projectType
+    when "module"
+      paths.modules.configs.appgyver
+    else
+      paths.application.configs.appgyver
