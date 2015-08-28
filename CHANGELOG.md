@@ -2,6 +2,7 @@
 
 Fixes:
 - Prevent `steroids make` from hanging up in Composer Module projects. (Also affected `steroids connect`, making the prompt unresponsive to input.)
+- Prevent `steroids connect` from entering an infinite build loop when watching project for changes.
 
 ## 4.1.16 (2015-08-24)
 
