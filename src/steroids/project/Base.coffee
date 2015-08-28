@@ -17,7 +17,7 @@ module.exports = class ProjectBase
 
 
   constructor: (@options={}) ->
-    @config = steroidsCli.config.getCurrent()
+    @config = steroidsCli.project.getConfig()
 
   initialize: (options={}) =>
     options.onSuccess()
@@ -120,7 +120,7 @@ module.exports = class ProjectBase
 
     (new Promise (resolve, reject) =>
       try
-        @config = steroidsCli.config.getCurrent()
+        @config = steroidsCli.project.getConfig()
         resolve()
       catch e
         reject new MakeError "Could not get project configuration. Is everything set up right in the config/ folder?"

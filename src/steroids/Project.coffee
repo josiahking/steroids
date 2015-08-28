@@ -11,8 +11,10 @@ module.exports = class Project
   constructor: (@paths, @argv) ->
 
   getConfig: =>
-    return @config if @config?
-    @config = new Config
+    return @currentConfig if @currentConfig?
+
+    config = new Config
+    @currentConfig = config.getCurrent()
 
   getType: =>
     return @projectType if @projectType?

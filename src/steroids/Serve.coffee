@@ -12,9 +12,9 @@ class Serve
     @baseURL = "http://127.0.0.1:#{@port}/"
 
   start: =>
-    config = steroidsCli.config.getCurrent()
+    config = steroidsCli.project.getConfig()
 
-    startLocation = if config.tabBar and config.getCurrent().tabBar.enabled
+    startLocation = if config.tabBar?.enabled
       config.tabBar.tabs[0].location
     else
       config.location

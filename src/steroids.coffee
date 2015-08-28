@@ -45,7 +45,6 @@ class Steroids
 
     @project = new Project paths, @options.argv
     @projectType = @project.getType()
-    @config = @project.getConfig()
 
   host:
     os:
