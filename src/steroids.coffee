@@ -10,10 +10,6 @@ chalk = require "chalk"
 Help = require "./steroids/Help"
 paths = require "./steroids/paths"
 
-detectSteroidsProject = require './steroids/paths/detect-steroids-project'
-detectIonicProject = require './steroids/paths/detect-ionic-project'
-detectCordovaProject = require './steroids/paths/detect-cordova-project'
-
 Promise.onPossiblyUnhandledRejection (e, promise) ->
   throw e
 
@@ -36,15 +32,10 @@ class Steroids
 
   constructor: (@options = {}) ->
     Version = require "./steroids/version/version"
-    Config = require "./steroids/project/config"
+    Project = require './steroids/project'
 
     @version = new Version
     @pathToSelf = process.argv[1]
-    @config = new Config
-    @projectType = if @options.argv.cordova or @isIonicProject() or @isCordovaProject()
-      "cordova"
-    else
-      "steroids"
     @platform = @options.argv.platform || "ios"
 
     @debugEnabled = @options.debug
@@ -52,11 +43,8 @@ class Steroids
 
     @connect = null
 
-  isIonicProject: ->
-    detectIonicProject paths
-
-  isCordovaProject: ->
-    detectCordovaProject paths
+    @project = new Project paths, @options.argv
+    @projectType = @project.getType()
 
   host:
     os:
@@ -77,9 +65,6 @@ class Steroids
       contents = fs.readFileSync(applicationConfig).toString()
 
     return contents
-
-  detectSteroidsProject: ->
-    detectSteroidsProject(paths)
 
   debug: (options = {}, other) =>
     message = if other?
@@ -139,7 +124,7 @@ class Steroids
     ]
 
     if command in commands
-      return if @detectSteroidsProject() or @projectType is "cordova"
+      return if @projectType?
 
       steroidsCli.log "Error: command '#{command}' requires to be run in a Steroids project directory."
       process.exit(1)

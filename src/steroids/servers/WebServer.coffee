@@ -39,7 +39,7 @@ class WebServer extends Server
       res.end()
       return
 
-    config = steroidsCli.config.getCurrent()
+    config = steroidsCli.project.getConfig()
 
     if !req.path.endsWith(".html") or req.query.steroidsServed or not config.tabBar.enabled
       res.status(status = 200).sendfile(fileDistPath)

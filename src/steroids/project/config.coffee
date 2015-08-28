@@ -1,30 +1,28 @@
-Either = require "data.either"
-fs = require "fs"
-_ = require "lodash"
-
-paths = require "../paths"
-LegacyConfig = require "./legacy-config"
-SupersonicConfig = require "./supersonic-config"
-CordovaConfig = require "./cordova-config"
-
 module.exports = class Config
-
   constructor: ->
 
-  getCurrent: =>
-    config = switch steroidsCli.projectType
-      when "cordova"
-        new CordovaConfig()
-      else
-        @eitherSupersonicOrLegacy().fold(
-          -> new SupersonicConfig()
-          -> new LegacyConfig()
-        )
+  @create: ->
+    LegacyConfig = require "./legacy-config"
+    SupersonicConfig = require "./supersonic-config"
+    CordovaConfig = require "./cordova-config"
 
-    config.getCurrent()
+    switch
+      when steroidsCli.projectType is "cordova"
+        new CordovaConfig
+      when steroidsCli.project.isSupersonicEnabled()
+        new SupersonicConfig
+      else
+        new LegacyConfig
+
+  getCurrent: =>
+    return @current if @current?
+
+    @current = Config.create().getCurrent()
 
   eitherSupersonicOrLegacy: ->
-    if fs.existsSync(paths.application.configs.app)
+    Either = require "data.either"
+
+    if steroidsCli.project.isSupersonicEnabled()
       new Either.Left("supersonic")
     else
       new Either.Right("legacy")
