@@ -62,29 +62,29 @@ class Connect
 
 
   startServer: ()=>
-    return new Promise (resolve, reject) =>
+    (new Promise (resolve, reject) =>
       Server = require "./Server"
-      BuildServerFactory = require "./servers/BuildServerFactory"
 
       @server = Server.start
         port: @port
-        callback: ()=>
-          global.steroidsCli.server = @server
+        callback: resolve
+    ).then =>
+      global.steroidsCli.server = @server
 
-          @buildServer = BuildServerFactory.create
-            server: @server
-            path: "/"
-            port: @port
-            livereload: @livereload
-            cordova: @cordova
+      BuildServerFactory = require "./servers/BuildServerFactory"
+      @buildServer = BuildServerFactory.create
+        server: @server
+        path: "/"
+        port: @port
+        livereload: @livereload
+        cordova: @cordova
 
-          @server.mount(@buildServer)
+      @server.mount(@buildServer)
 
-          @startPrompt()
-          .then resolve
+      @startPrompt()
 
   startPrompt: ()=>
-    return new Promise (resolve, reject) =>
+    Promise.resolve().then =>
       Prompt = require "./Prompt"
       @prompt = new Prompt
         context: @
@@ -118,47 +118,23 @@ class Connect
 
       if @watch
         @startWatcher()
-        .then resolve
-      else
-        resolve()
 
-  startWatcher: ()=>
-    return new Promise (resolve, reject) =>
-      Watcher = require "./fs/watcher"
-      appWatcher = new Watcher
-        path: "app"
-        ignored: @watchExclude
+  getUserPaths: =>
+    userPaths = if steroidsCli.options.argv.watch
+      [].concat(steroidsCli.options.argv.watch)
+    else
+      []
 
-      wwwWatcher = new Watcher
-        path: "www"
-        ignored: @watchExclude
+  startWatcher: () =>
+    Watcher = require './connect/Watcher'
+    watcher = new Watcher {
+      @watchExclude
+      @livereload
+      userPaths: @getUserPaths()
+    }
 
-      configWatcher = new Watcher
-        path: "config"
-        ignored: @watchExclude
-
-      ProjectFactory = require "./project/ProjectFactory"
-      project = ProjectFactory.create()
-
-      canBeLiveReload = true
-      shouldMake = false
-      isMaking = false
-
-      doMake = =>
-        new Promise (resolve, reject)=>
-          steroidsCli.debug "connect", "doMake"
-          project.make().then =>
-            steroidsCli.debug "connect", "doMake succ"
-            resolve()
-          .catch (error)=>
-            steroidsCli.debug "connect", "doMake fail"
-            if error.message.match /Parse error/ # coffee parser errors are of class Error
-              console.log "Error parsing application configuration files: #{error.message}"
-              reject new ParseError error.message
-            else
-              reject error
-
-      doLiveReload = =>
+    Promise.resolve watcher.startWatching {
+      livereload: =>
         new Promise (resolve, reject)=>
           steroidsCli.debug "connect", "doLiveReload"
 
@@ -169,63 +145,28 @@ class Connect
           steroidsCli.debug "connect", "doLiveReload succ"
           resolve()
 
-      doFullReload = =>
-        new Promise (resolve, reject)=>
-          steroidsCli.debug "connect", "doFullReload"
-          project.package()
-          .then =>
-            steroidsCli.debug "connect", "doFullReload succ"
-            canBeLiveReload = true
-            @prompt.refresh()
-            resolve()
-
-      maker = =>
-        return if isMaking
-        return unless shouldMake
-
-        shouldMake = false
-        isMaking = true
-
-        steroidsCli.log
-          message: "Detected change, running make ..."
-          refresh: false
-        doMake()
-        .then =>
-          steroidsCli.debug "connect", "livereload: #{@livereload} and can be livereloaded: #{canBeLiveReload}"
-          if @livereload and canBeLiveReload
-            doLiveReload()
+      make: =>
+        steroidsCli.debug "connect", "doMake"
+        @project.make().then =>
+          steroidsCli.debug "connect", "doMake succ"
+        .catch (error)=>
+          steroidsCli.debug "connect", "doMake fail"
+          if error.message.match /Parse error/ # coffee parser errors are of class Error
+            console.log "Error parsing application configuration files: #{error.message}"
+            throw new ParseError error.message
           else
-            doFullReload()
-        .then =>
-          isMaking = false
+            throw error
 
-      setInterval maker, 100
+      fullreload: =>
+        steroidsCli.debug "connect", "doFullReload"
+        @project.package().then =>
+          steroidsCli.debug "connect", "doFullReload succ"
+          canBeLiveReload = true
+          @prompt.refresh()
 
-      appWatcher.on ["add", "change", "unlink"], (path)=>
-        shouldMake = true
+    }
 
-      wwwWatcher.on ["add", "change", "unlink"], (path)=>
-        shouldMake = true
 
-      configWatcher.on ["add", "change", "unlink"], (path)=>
-        canBeLiveReload = false
-        shouldMake = true
-
-      userPaths = if steroidsCli.options.argv.watch
-        [].concat(steroidsCli.options.argv.watch)
-      else
-        []
-
-      for userPath in userPaths
-        do (userPath) =>
-          watcher = new Watcher
-            path: userPath
-            ignored: @watchExclude
-
-          watcher.on ["add", "change", "unlink"], (path)=>
-            shouldMake = true
-
-      resolve()
 
 
 module.exports = Connect

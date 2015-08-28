@@ -65,6 +65,7 @@
     "jasmine-node": "1.14.5"
   },
   "dependencies": {
+    "baconjs": "^0.7.71",
     "bluebird": "2.9.34",
     "body-parser": "1.8.1",
     "bower": "1.3.8",
