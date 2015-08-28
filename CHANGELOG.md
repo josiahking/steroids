@@ -1,3 +1,8 @@
+## 4.1.17 (TODO)
+
+Fixes:
+- Prevent `steroids make` from hanging up in Composer Module projects. (Also affected `steroids connect`, making the prompt unresponsive to input.)
+
 ## 4.1.16 (2015-08-24)
 
 Features:
