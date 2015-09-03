@@ -1,3 +1,8 @@
+## 4.1.18 (2015-09-03)
+
+Fixes:
+- Prevent stale views of a Composer Module in the mobile harness app.
+
 ## 4.1.17 (2015-09-03)
 
 Fixes:
