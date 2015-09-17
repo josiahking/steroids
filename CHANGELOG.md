@@ -1,3 +1,8 @@
+## 4.1.19 (2015-09-17)
+
+Fixes:
+- XCode7 Simulator can be launched. Fixes [#1041](https://github.com/AppGyver/steroids/issues/1041)
+
 ## 4.1.18 (2015-09-03)
 
 Fixes:
