@@ -1,3 +1,8 @@
+## 4.1.20 (2015-10-05)
+
+Changes:
+- Update to iOS Simulator 4.0.7
+
 ## 4.1.19 (2015-09-17)
 
 Fixes:
