@@ -1,3 +1,8 @@
+## 4.1.21 (2015-10-13)
+
+Fixes:
+- iOS Simulator failed to connect on El Capitan
+
 ## 4.1.20 (2015-10-05)
 
 Changes:
