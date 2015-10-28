@@ -1,3 +1,8 @@
+## 4.1.22 (2015-10-28)
+
+Changes:
+- Update Android emulator to 4.1.0
+
 ## 4.1.21 (2015-10-13)
 
 Fixes:
