@@ -20,6 +20,8 @@ class Genymotion
     fs = require "fs"
 
     if steroidsCli.host.os.isWindows()
+      steroidsCli.debug "GENYMOTION", "selected Windows as OS"
+
       genymotionApp = process.env.GENYMOTION_APP ? path.join "C:", "Program Files", "Genymobile", "Genymotion"
 
       base = path.join genymotionApp
@@ -28,15 +30,23 @@ class Genymotion
       adb = path.join genymotionApp, "tools", "adb.exe"
 
     else if steroidsCli.host.os.isOSX()
+      steroidsCli.debug "GENYMOTION", "selected OS X as OS"
+
       genymotionApp = process.env.GENYMOTION_APP ? path.join "/Applications", "Genymotion.app"
       genmotionShell = process.env.GENYMOTION_SHELL ? path.join "/Applications", "Genymotion Shell.app"
 
       base = path.join genymotionApp, "Contents", "MacOS"
-      player = path.join genymotionApp, "Contents", "MacOS", "player"
+      player = path.join genymotionApp, "Contents", "MacOS", "player.app", "Contents", "MacOS", "player"
       shell = path.join genmotionShell, "Contents", "MacOS", "genyshell"
       adb = path.join base, "tools", "adb"
 
+      unless fs.existsSync player
+        steroidsCli.debug "GENYMOTION", "OS X player path missing, trying legacy path for older Genymotion versions"
+        player = path.join genymotionApp, "Contents", "MacOS", "player"
+
     else if steroidsCli.host.os.isLinux()
+      steroidsCli.debug "GENYMOTION", "selected Linux as OS"
+
       # TODO: Set default paths for Linux
       genymotionApp = process.env.GENYMOTION_APP ? ""
       genmotionShell = process.env.GENYMOTION_SHELL ? ""
@@ -47,6 +57,8 @@ class Genymotion
       adb = path.join genymotionApp, "tools", "adb"
 
     else
+      steroidsCli.debug "GENYMOTION", "Could not detect host OS!"
+
       return undefined
 
     geny =
@@ -55,7 +67,12 @@ class Genymotion
       shell: shell
       adb: adb
 
-    return undefined for _, genyPath of geny when not fs.existsSync genyPath
+    for type, genyPath of geny when not fs.existsSync genyPath
+      steroidsCli.debug "GENYMOTION", "Missing binary of type #{type}: #{genyPath}"
+      steroidsCli.debug "GENYMOTION", "Continuing without Genymotion..."
+      return undefined
+
+    steroidsCli.debug "GENYMOTION", "Found all required binaries, continuing with Genymotion..."
     return geny
 
   run: (opts = {}) =>
