@@ -1,3 +1,18 @@
+## 4.1.22 (2015-10-28)
+
+Changes:
+- Update Android emulator to 4.1.0
+
+## 4.1.21 (2015-10-13)
+
+Fixes:
+- iOS Simulator failed to connect on El Capitan
+
+## 4.1.20 (2015-10-05)
+
+Changes:
+- Update to iOS Simulator 4.0.7
+
 ## 4.1.19 (2015-09-17)
 
 Fixes:
