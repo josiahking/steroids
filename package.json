@@ -80,7 +80,7 @@
     "express-json": "1.0.0",
     "figlet": "1.1.0",
     "fs-extra": "0.13.0",
-    "generator-steroids": "1.0.20",
+    "generator-steroids": "1.0.21",
     "grunt": "0.4.5",
     "inquirer": "0.3.4",
     "ios-sim": "http://steroids-assets.appgyver.com/ios-sim-3.1.1-AppGyver-p1.tgz",
