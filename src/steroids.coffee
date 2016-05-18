@@ -15,11 +15,12 @@ Promise.onPossiblyUnhandledRejection (e, promise) ->
 
 
 class SteroidsError extends Error
-  constructor: (message)->
+  constructor: (message) ->
     Error.call @
     Error.captureStackTrace(@, @constructor)
     @name = @constructor.name
     @message = message
+    process.exit -1 if process.env.EXIT_ON_ERROR?
 
 class Steroids
 
