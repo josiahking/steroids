@@ -1,3 +1,8 @@
+## 4.1.26 (2016-09-09)
+
+Changes:
+- Update `generator-steroids` to create new projects with `webcomponents-lite.js` to fix iOS 10 issue with shadow DOM.
+
 ## 4.1.22 (2015-10-28)
 
 Changes:
