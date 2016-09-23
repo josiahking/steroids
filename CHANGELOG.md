@@ -1,3 +1,11 @@
+## 4.1.27 (206-09-23)
+
+Fixes:
+- iOS Simulator now works with Xcode 8/iOS 10.
+
+Known issues:
+- iOS Simulator device dropdown in Connect Screen shows multiple redundant/unsupported device types, including watchOS and tvOS.
+
 ## 4.1.26 (2016-09-09)
 
 Changes:
