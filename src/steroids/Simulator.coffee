@@ -31,7 +31,7 @@ class Simulator
 
   validXCodeVersion: ->
     new Promise (resolve, reject) ->
-      minimumXcodeVersion = /Xcode (6|7)./
+      minimumXcodeVersion = /Xcode (6|7|8)./
 
       xcodeVersionSession = sbawn
         cmd: "xcodebuild"
